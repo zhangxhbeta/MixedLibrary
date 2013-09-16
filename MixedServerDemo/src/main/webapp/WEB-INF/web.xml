@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<description>MixedServer</description>
+
+	<!-- mixedserver.server.TokenLoginFilter -->
+	<filter>
+		<filter-name>TokenLoginFilter</filter-name>
+		<filter-class>mixedserver.server.TokenLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>TokenLoginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- rpc服务地址 -->
+	<servlet>
+		<servlet-name>JSONRPCServlet</servlet-name>
+		<servlet-class>mixedserver.protocol.jsonrpc.RPC</servlet-class>
+
+		<!-- 当空请求时打印方法列表 -->
+		<init-param>
+			<param-name>expose_methods</param-name>
+			<param-value>false</param-value>
+		</init-param>
+
+		<!-- 打印消息 -->
+		<init-param>
+			<param-name>print_message</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- 预先实例化服务类 -->
+		<init-param>
+			<param-name>persist_class</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- 返回详细的java错误栈 -->
+		<init-param>
+			<param-name>detailed_errors</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- gzip压缩阀值，单位是 kb -->
+		<init-param>
+			<param-name>gzip_threshold</param-name>
+			<param-value>1</param-value>
+		</init-param>
+
+		<!-- 发送给客户端时加密消息 -->
+		<init-param>
+			<param-name>encrypt_message</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- 接到客户端请求后，先解密消息再进行随后处理 -->
+		<init-param>
+			<param-name>dencrypt_message</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>JSONRPCServlet</servlet-name>
+		<url-pattern>/JSON-RPC</url-pattern>
+	</servlet-mapping>
+</web-app>

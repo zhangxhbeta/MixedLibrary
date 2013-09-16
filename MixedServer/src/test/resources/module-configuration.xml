@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modules>
+	<module>
+		<name>testJsonRpc</name>
+		<interface>com.saintangelo.application.TestJsonRpc
+		</interface>
+		<class>com.saintangelo.application.impl.TestJsonRpcWaiter</class>
+	</module>
+
+	<module>
+		<name>encryptionTool</name>
+		<interface>mixedserver.application.demo.EncryptionTool
+		</interface>
+		<class>mixedserver.application.demo.impl.EncryptionToolImpl</class>
+	</module>
+
+	<module>
+		<name>authority</name>
+		<interface>mixedserver.application.AuthorityService</interface>
+		<class>com.saintangelo.application.impl.AuthorityServiceImpl</class>
+	</module>
+
+	<module>
+		<name>echo</name>
+		<interface>com.saintangelo.application.Echo</interface>
+		<class>com.saintangelo.application.impl.EchoImpl</class>
+	</module>
+
+
+</modules>

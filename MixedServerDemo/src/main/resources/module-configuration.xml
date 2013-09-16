@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modules>
+
+	<!-- 默认的登录接口，请按照这个接口来做实现 -->
+	<module>
+		<name>authority</name>
+		<interface>mixedserver.application.AuthorityService</interface>
+		<class>mixedserver.application.AuthorityServiceImpl</class>
+	</module>
+
+	<module>
+		<name>encryptionTool</name>
+		<interface>mixedserver.application.demo.EncryptionTool
+		</interface>
+		<class>mixedserver.application.demo.impl.EncryptionToolImpl</class>
+	</module>
+
+</modules>

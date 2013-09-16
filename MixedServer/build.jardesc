@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="D:/GitRepository/DRY/MixedServer/build/mixed-server.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/MixedServer/publish_to_mobile_server.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.application"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.server"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.protocol.jsonrpc.annotate"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.protocol.jsonrpc.events"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.protocol.jsonrpc.filter"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.protocol"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.protocol.jsonrpc.client"/>
+        <javaElement handleIdentifier="=MixedServer/src\/main\/java&lt;mixedserver.protocol.jsonrpc"/>
+    </selectedElements>
+</jardesc>

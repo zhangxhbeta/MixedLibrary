@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MServer演示</string>
+    <string name="action_settings">设置</string>
+    <string name="hello_world">你好，我是Demo</string>
+    <string name="title_activity_login">登录</string>
+    <string name="title_activity_user_center">用户中心</string>
+
+</resources>
