@@ -9,5 +9,5 @@ package mixedserver.demo.tools;
 public class GlobalTools {
 
 	// RPC服务器接口地址
-	public static final String SERVER_URL = "http://192.168.0.102:8080/JSON-RPC?debug=true";
+	public static final String SERVER_URL = "http://192.168.0.142:8080/JSON-RPC?debug=true";
 }

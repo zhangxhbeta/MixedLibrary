@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="mixedserver.demo.MainActivity_"
+            android:name="mixedserver.demo.controller.MainActivity_"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,17 +26,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="mixedserver.demo.LoginActivity_"
+            android:name="mixedserver.demo.controller.LoginActivity_"
             android:label="@string/title_activity_login"
             android:parentActivityName="mixedserver.demo.MainActivity_" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="mixedserver.demo.MainActivity_" />
+                android:value="mixedserver.demo.controller.MainActivity_" />
         </activity>
         <activity
-            android:name="mixedserver.demo.UserCenterActivity_"
+            android:name="mixedserver.demo.controller.UserCenterActivity_"
             android:label="@string/title_activity_user_center"
-            android:parentActivityName="mixedserver.demo.MainActivity_" >
+            android:parentActivityName="mixedserver.demo.controller.MainActivity_" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="mixedserver.demo.MainActivity_" />
