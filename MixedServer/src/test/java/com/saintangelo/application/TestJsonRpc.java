@@ -116,4 +116,28 @@ public interface TestJsonRpc {
 	 * @return
 	 */
 	public Map<String, Menu> echo2(Map<String, Menu> menus);
+
+	/**
+	 * 二进制测试
+	 * 
+	 * @param image
+	 * @return
+	 */
+	public byte[] uploadSmallImage(byte[] image);
+
+	/**
+	 * 二进制测试
+	 * 
+	 * @param image
+	 * @return
+	 */
+	public Byte[] uploadSmallImageByte(Byte[] image);
+
+	/**
+	 * 二进制在类里面
+	 * 
+	 * @param person
+	 * @return
+	 */
+	public Person uploadPersonWithImage(Person person);
 }

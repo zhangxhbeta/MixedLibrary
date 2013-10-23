@@ -43,13 +43,13 @@
 		<!-- 发送给客户端时加密消息 -->
 		<init-param>
 			<param-name>encrypt_message</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 
 		<!-- 接到客户端请求后，先解密消息再进行随后处理 -->
 		<init-param>
 			<param-name>dencrypt_message</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 
 	</servlet>

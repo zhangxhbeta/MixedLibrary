@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.saintangelo.application.Menu;
+import com.saintangelo.application.Person;
 import com.saintangelo.application.TestJsonRpc;
 import com.saintangelo.application.User;
 import com.saintangelo.application.UserGroup;
-
 
 public class TestJsonRpcWaiter implements TestJsonRpc {
 
@@ -189,5 +189,20 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 	@Override
 	public Map<String, Menu> echo2(Map<String, Menu> menus) {
 		return menus;
+	}
+
+	@Override
+	public byte[] uploadSmallImage(byte[] image) {
+		return image;
+	}
+
+	@Override
+	public Byte[] uploadSmallImageByte(Byte[] image) {
+		return image;
+	}
+
+	@Override
+	public Person uploadPersonWithImage(Person person) {
+		return person;
 	}
 }

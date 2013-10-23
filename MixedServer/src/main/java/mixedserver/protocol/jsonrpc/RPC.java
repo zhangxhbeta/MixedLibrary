@@ -816,7 +816,10 @@ public class RPC extends HttpServlet {
 				methparams = new Object[param_count];
 				Class[] paramtypes = m.getParameterTypes();
 				Type[] types = m.getGenericParameterTypes();
+
 				for (int i = 0; i < paramtypes.length; i++) {
+					logger.info(paramtypes[i].getName());
+
 					if (paramtypes[i].getName().matches("float")) {
 						methparams[i] = Float.parseFloat(request.getParamAt(i));
 					} else if (paramtypes[i].getName().matches("int")) {
@@ -832,6 +835,11 @@ public class RPC extends HttpServlet {
 					} else if (paramtypes[i].getName().matches("boolean")) {
 						methparams[i] = Boolean.parseBoolean(request
 								.getParamAt(i));
+					} else if (paramtypes[i].getName().equals("[B")) {
+						// byte[]
+						byte[] encoded = objectmapper.convertValue(
+								request.getParamAt(i), byte[].class);
+						methparams[i] = encoded;
 					} else if (paramtypes[i].isEnum()) {
 						methparams[i] = Enum.valueOf(paramtypes[i],
 								request.getParamAt(i));
@@ -929,6 +937,9 @@ public class RPC extends HttpServlet {
 								+ jsonstr,
 						RPCException.PREDEFINED_ERROR_INTERNAL_ERROR);
 			}
+		} else if (resultclassname.equals("[B")) {
+			String jsonstr = objectmapper.writeValueAsString(result);
+			result = jsonstr;
 		}
 
 		response.setResult(result);
