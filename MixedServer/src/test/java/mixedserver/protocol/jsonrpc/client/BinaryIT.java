@@ -3,7 +3,7 @@ package mixedserver.protocol.jsonrpc.client;
 import com.saintangelo.application.Person;
 import com.saintangelo.application.TestJsonRpc;
 
-public class BinaryTest extends AbstractedRPC {
+public class BinaryIT extends AbstractedRPC {
 	public void testUploadImage() {
 		TestJsonRpc jrpc = client.openProxy("testJsonRpc", TestJsonRpc.class);
 

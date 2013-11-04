@@ -13,8 +13,6 @@ public class AllTestSuite {
 		suite.addTestSuite(ReturnPOJOIT.class);
 		suite.addTestSuite(RpcComplexIT.class);
 		suite.addTestSuite(RpcGenericListIT.class);
-		suite.addTestSuite(RpcSessionIT.class);
-
 		suite.addTestSuite(BatchRpcIT.class);
 		suite.addTestSuite(GzipCompressIT.class);
 		// $JUnit-END$

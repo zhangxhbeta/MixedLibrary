@@ -20,7 +20,7 @@ public class AbstractedRPC extends TestCase {
 
 		client = new Client(session);
 
-		client.setDencryptMessage(false);
+		client.setDencryptMessage(true);
 		client.setEncryptMessage(false);
 
 		Map<String, String> au = client.login("SA", "");

@@ -52,11 +52,12 @@ public class BatchRpcIT extends TestCase {
 
 		JSONArray jsonResponseBatch = null;
 
-		String responseMessage = session.sendAndReceive(EncrpytionTool
-				.encryptByBase64_3DES(jsonRequestBatch.toString()));
+		String responseMessage = session.sendAndReceive(jsonRequestBatch
+				.toString());
 
-		responseMessage = EncrpytionTool.dencryptFromBase64_3DES(responseMessage);
-		
+		responseMessage = EncrpytionTool
+				.dencryptFromBase64_3DES(responseMessage);
+
 		try {
 			Object response = null;
 			JSONTokener tokener = new JSONTokener(responseMessage);

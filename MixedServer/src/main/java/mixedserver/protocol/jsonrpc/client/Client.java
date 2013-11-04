@@ -294,8 +294,14 @@ public class Client implements InvocationHandler {
 		}
 		sendJson.put("id", id);
 
-		// 加密
 		String sendMessage = sendJson.toString();
+		// 打印发送消息
+		if (logger.isDebugEnabled()) {
+			logger.debug((encryptMessage ? "发送的消息（将加密）" : "发送的消息: ")
+					+ sendMessage);
+		}
+
+		// 加密
 		if (encryptMessage) {
 			sendMessage = EncrpytionTool.encryptByBase64_3DES(sendMessage);
 		}
@@ -307,6 +313,12 @@ public class Client implements InvocationHandler {
 		if (dencryptMessage) {
 			responseMessage = EncrpytionTool
 					.dencryptFromBase64_3DES(responseMessage);
+		}
+
+		// 打印接收消息
+		if (logger.isDebugEnabled()) {
+			logger.debug((dencryptMessage ? "收到的消息（已解密）：" : "收到的消息：")
+					+ responseMessage);
 		}
 
 		JSONObject responseJson = null;

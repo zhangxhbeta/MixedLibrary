@@ -126,10 +126,6 @@ public class HTTPSession implements Session {
 
 	public String sendAndReceive(String message) throws RPCException {
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Sending: " + message.toString());
-		}
-
 		String responseString;
 		HttpEntity entity;
 		try {
