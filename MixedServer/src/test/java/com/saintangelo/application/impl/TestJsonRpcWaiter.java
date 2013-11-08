@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.saintangelo.application.Menu;
 import com.saintangelo.application.Person;
+import com.saintangelo.application.PersonExt;
 import com.saintangelo.application.TestJsonRpc;
 import com.saintangelo.application.User;
 import com.saintangelo.application.UserGroup;
@@ -204,5 +205,14 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 	@Override
 	public Person uploadPersonWithImage(Person person) {
 		return person;
+	}
+
+	@Override
+	public PersonExt getPersonExt() {
+		PersonExt ext = new PersonExt();
+
+		ext.setName("i am superman");
+
+		return ext;
 	}
 }

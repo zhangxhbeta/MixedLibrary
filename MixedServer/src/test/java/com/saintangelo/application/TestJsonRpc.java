@@ -140,4 +140,11 @@ public interface TestJsonRpc {
 	 * @return
 	 */
 	public Person uploadPersonWithImage(Person person);
+
+	/**
+	 * 测试子类
+	 * 
+	 * @return
+	 */
+	public PersonExt getPersonExt();
 }

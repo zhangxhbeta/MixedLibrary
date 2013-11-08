@@ -27,4 +27,11 @@
 	</module>
 
 
+	<module>
+		<name>lifeAssistantPay</name>
+		<interface>com.topdt.mobilePay.app.lifeAssistant.inter.LifeAssistantPayInter
+		</interface>
+		<class>com.topdt.mobilePay.app.lifeAssistant.inter.LifeAssistantPayImpl
+		</class>
+	</module>
 </modules>
