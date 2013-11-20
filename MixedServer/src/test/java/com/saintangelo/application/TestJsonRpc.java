@@ -146,5 +146,5 @@ public interface TestJsonRpc {
 	 * 
 	 * @return
 	 */
-	public PersonExt getPersonExt();
+	public Person getPersonExt();
 }
