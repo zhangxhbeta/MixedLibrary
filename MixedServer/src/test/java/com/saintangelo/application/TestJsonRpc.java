@@ -147,4 +147,26 @@ public interface TestJsonRpc {
 	 * @return
 	 */
 	public Person getPersonExt();
+
+	/**
+	 * 测试返回null
+	 * 
+	 * @return
+	 */
+	public Person returnPojoNull();
+
+	/**
+	 * 测试返回null
+	 * 
+	 * @return
+	 */
+	public String returnStringNull();
+
+	/**
+	 * 测试返回null
+	 * 
+	 * @return
+	 */
+	public byte[] returnBytesNull();
+
 }

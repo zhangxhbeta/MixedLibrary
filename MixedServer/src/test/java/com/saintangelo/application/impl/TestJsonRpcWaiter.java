@@ -215,4 +215,19 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 
 		return ext;
 	}
+
+	@Override
+	public Person returnPojoNull() {
+		return null;
+	}
+
+	@Override
+	public String returnStringNull() {
+		return null;
+	}
+
+	@Override
+	public byte[] returnBytesNull() {
+		return null;
+	}
 }

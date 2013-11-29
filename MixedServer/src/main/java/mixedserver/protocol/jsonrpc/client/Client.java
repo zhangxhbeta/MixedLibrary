@@ -376,10 +376,14 @@ public class Client implements InvocationHandler {
 			return Double.parseDouble(rawResult.toString());
 		} else if (returnType.isEnum()) {
 			return Enum.valueOf(returnType, rawResult.toString());
-		} else if (returnType.isPrimitive()
-				|| returnType.getName().equals("java.lang.String")) {
-
+		} else if (returnType.isPrimitive()) {
 			return rawResult;
+		} else if (returnType.getName().equals("java.lang.String")) {
+			if (rawResult == JSONObject.NULL) {
+				return null;
+			} else {
+				return rawResult;
+			}
 		} else {
 			return objectmapper.readValue(rawResult.toString(), returnType);
 		}

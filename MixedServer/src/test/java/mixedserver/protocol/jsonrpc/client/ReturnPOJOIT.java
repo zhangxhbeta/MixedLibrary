@@ -18,5 +18,15 @@ public class ReturnPOJOIT extends AbstractedRPC {
 
 		// Person extPerson = jrpc.getPersonExt();
 		// assertNull(extPerson.getImage());
+
+		byte[] b = jrpc.returnBytesNull();
+		assertNull(b);
+
+		Person p = jrpc.returnPojoNull();
+		assertNull(p);
+
+		String s = jrpc.returnStringNull();
+		assertNull(s);
+
 	}
 }
