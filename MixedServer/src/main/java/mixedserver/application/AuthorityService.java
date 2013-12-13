@@ -35,14 +35,10 @@ public interface AuthorityService {
 			String password) throws RPCException;
 
 	/**
-	 * 注销，注销掉token
+	 * 注销，同时要注销掉token
 	 * 
-	 * @param domianid
-	 * @param logincode
-	 * @param password
-	 * @return 用户姓名
 	 * @throws RPCException
 	 */
-	public void logout(String token) throws RPCException;
+	public void logout() throws RPCException;
 
 }
