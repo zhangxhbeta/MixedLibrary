@@ -57,17 +57,13 @@ public class LoginService {
 				client.registLongtimeToken("");
 
 				// 调用注销服务
-				AuthorityService auth = client.openProxy("authority",
-						AuthorityService.class);
 				try {
-					auth.logout(token);
+					client.logout();
 
 					handler.sendSuccessMessage(null);
 				} catch (RPCException e) {
 					handler.sendFailureMessage(e, e.getLocalizedMessage(),
 							e.getCode());
-				} finally {
-					client.closeProxy(auth);
 				}
 			}
 		});

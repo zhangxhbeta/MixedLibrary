@@ -1,26 +1,3 @@
-/*
- * jabsorb - a Java to JavaScript Advanced Object Request Broker
- * http://www.jabsorb.org
- *
- * Copyright 2007-2009 The jabsorb team
- *
- * based on original code from
- * JSON-RPC-Client, a Java client extension to JSON-RPC-Java
- * (C) Copyright CodeBistro 2007, Sasha Ovsankin <sasha at codebistro dot com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
 package mixedserver.protocol.jsonrpc.client;
 
 import java.lang.reflect.InvocationHandler;
@@ -61,6 +38,7 @@ public class Client implements InvocationHandler {
 	public static final String SESSION_DOMAINCODE = "_SESSION_DOMAINCODE";
 
 	private static ObjectMapper objectmapper = new ObjectMapper();
+
 	private static Hashtable<String, Client> clients = new Hashtable<String, Client>();
 
 	private Session session;
@@ -68,6 +46,10 @@ public class Client implements InvocationHandler {
 	private boolean encryptMessage = false;
 
 	private boolean dencryptMessage = false;
+
+	private boolean longtimeTokenRegisted = false;
+
+	private String rpcNameAuthority = "authority";
 
 	/**
 	 * Maintain a unique id for each message
@@ -83,138 +65,6 @@ public class Client implements InvocationHandler {
 	protected Client(Session session) {
 		this.session = session;
 
-	}
-
-	/**
-	 * 获取url 关联的 Client 对象
-	 * 
-	 * @param url
-	 * @return
-	 */
-	public synchronized static Client getClient(String url) {
-		Client client = clients.get(url);
-
-		if (client == null) {
-			HTTPSession.register(TransportRegistry.i());
-			Session session = TransportRegistry.i().createSession(url);
-
-			client = new Client(session);
-			clients.put(url, client);
-		}
-
-		return client;
-	}
-
-	/**
-	 * 登录
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 * @throws RPCException
-	 */
-	public Map<String, String> login(String logincode, String password)
-			throws RPCException {
-		return login(null, logincode, password);
-	}
-
-	/**
-	 * 登录
-	 * 
-	 * @param domainId
-	 * @param username
-	 * @param password
-	 * @return
-	 * @throws RPCException
-	 */
-	public Map<String, String> login(String domainId, String logincode,
-			String password) throws RPCException {
-		AuthorityService auth = openProxy("authority", AuthorityService.class);
-
-		try {
-			Map<String, String> result = null;
-			if (domainId != null) {
-				result = auth.login(domainId, logincode, password);
-			} else {
-				result = auth.login(logincode, password);
-			}
-			session.setAttribute(SESSION_USERNAME, result);
-			session.setAttribute(SESSION_LOGINCODE, logincode);
-
-			if (domainId != null) {
-				session.setAttribute(SESSION_DOMAINCODE, domainId);
-			}
-
-			return result;
-		} finally {
-			closeProxy(auth);
-		}
-	}
-
-	/**
-	 * 是否已登录
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 */
-	public boolean isLogin() {
-		return session.getAttribute(SESSION_USERNAME) != null;
-	}
-
-	/**
-	 * 返回登录代码（登录时填写的）
-	 * 
-	 * @return
-	 */
-	public String getLoginCode() {
-		return (String) session.getAttribute(SESSION_LOGINCODE);
-	}
-
-	/**
-	 * 返回域代码（登录时填写的）
-	 * 
-	 * @return
-	 */
-	public String getDomainCode() {
-		return (String) session.getAttribute(SESSION_DOMAINCODE);
-	}
-
-	/**
-	 * 更改用户
-	 * 
-	 * @param username
-	 * @param password
-	 * @return
-	 * @throws RPCException
-	 */
-	public Map<String, String> changeUser(String username, String password)
-			throws RPCException {
-		return login(username, password);
-	}
-
-	public void registLongtimeToken(String token) {
-		session.setCookie(AuthorityService.AS_LONGTIME_TOKEN, token);
-	}
-
-	/**
-	 * 协议里面用到的id
-	 * 
-	 * @return
-	 */
-	private synchronized int getId() {
-		return id++;
-	}
-
-	/** Manual instantiation of HashMap<String, Object> */
-	private static class ProxyMap extends HashMap {
-		public String getString(Object key) {
-			return (String) super.get(key);
-		}
-
-		public Object putString(String key, Object value) {
-			return super.put(key, value);
-		}
 	}
 
 	private ProxyMap proxyMap = new ProxyMap();
@@ -409,10 +259,156 @@ public class Client implements InvocationHandler {
 					new Integer(-32600));
 	}
 
+	/**
+	 * 是否已登录
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public boolean isLogin() {
+		return session.getAttribute(SESSION_USERNAME) != null;
+	}
+
+	/**
+	 * 返回登录代码（登录时填写的）
+	 * 
+	 * @return
+	 */
+	public String getLoginCode() {
+		return (String) session.getAttribute(SESSION_LOGINCODE);
+	}
+
+	/**
+	 * 返回域代码（登录时填写的）
+	 * 
+	 * @return
+	 */
+	public String getDomainCode() {
+		return (String) session.getAttribute(SESSION_DOMAINCODE);
+	}
+
+	/**
+	 * 注册长时间会话 token
+	 * 
+	 * @param token
+	 */
+	public void registLongtimeToken(String token) {
+		session.setCookie(AuthorityService.AS_LONGTIME_TOKEN, token);
+		longtimeTokenRegisted = true;
+	}
+
+	/**
+	 * 是否注册长时间会话token
+	 * 
+	 * @return
+	 */
+	public boolean isLongtimeTokenRegisted() {
+		return longtimeTokenRegisted;
+	}
+
+	/**
+	 * 获取url 关联的 Client 对象
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public synchronized static Client getClient(String url) {
+		Client client = clients.get(url);
+
+		if (client == null) {
+			HTTPSession.register(TransportRegistry.i());
+			Session session = TransportRegistry.i().createSession(url);
+
+			client = new Client(session);
+			clients.put(url, client);
+		}
+
+		return client;
+	}
+
 	public Session getSession() {
 		return session;
 	}
 
+	/**
+	 * 登录
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws RPCException
+	 */
+	public Map<String, String> login(String logincode, String password)
+			throws RPCException {
+		return login(null, logincode, password);
+	}
+
+	/**
+	 * 登录
+	 * 
+	 * @param domainId
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws RPCException
+	 */
+	public Map<String, String> login(String domainId, String logincode,
+			String password) throws RPCException {
+
+		session.removeAllAttribute();
+
+		AuthorityService auth = openProxy(rpcNameAuthority,
+				AuthorityService.class);
+
+		try {
+			Map<String, String> result = null;
+			if (domainId != null) {
+				result = auth.login(domainId, logincode, password);
+			} else {
+				result = auth.login(logincode, password);
+			}
+			session.setAttribute(SESSION_USERNAME, result);
+			session.setAttribute(SESSION_LOGINCODE, logincode);
+
+			if (domainId != null) {
+				session.setAttribute(SESSION_DOMAINCODE, domainId);
+			}
+
+			return result;
+		} finally {
+			closeProxy(auth);
+		}
+	}
+
+	/**
+	 * 注销
+	 * 
+	 * @throws RPCException
+	 */
+	public void logout() throws RPCException {
+		AuthorityService auth = openProxy(rpcNameAuthority,
+				AuthorityService.class);
+
+		try {
+			auth.logout();
+			session.removeAllAttribute();
+
+		} finally {
+			closeProxy(auth);
+		}
+	}
+
+	/**
+	 * 协议里面用到的id
+	 * 
+	 * @return
+	 */
+	private synchronized int getId() {
+		return id++;
+	}
+
+	// Get Set 们
 	public boolean isEncryptMessage() {
 		return encryptMessage;
 	}
@@ -429,4 +425,18 @@ public class Client implements InvocationHandler {
 		this.dencryptMessage = dencryptMessage;
 	}
 
+	public void setRpcNameAuthority(String rpcNameAuthority) {
+		this.rpcNameAuthority = rpcNameAuthority;
+	}
+
+	/** Manual instantiation of HashMap<String, Object> */
+	private static class ProxyMap extends HashMap {
+		public String getString(Object key) {
+			return (String) super.get(key);
+		}
+
+		public Object putString(String key, Object value) {
+			return super.put(key, value);
+		}
+	}
 }

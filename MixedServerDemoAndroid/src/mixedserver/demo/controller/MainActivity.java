@@ -1,7 +1,5 @@
 package mixedserver.demo.controller;
 
-import mixedserver.application.AuthorityService;
-import mixedserver.demo.DemoApplication;
 import mixedserver.demo.R;
 import mixedserver.demo.service.EncryptionService;
 import mixedserver.demo.tools.AsyncResponseHandler;
@@ -10,7 +8,6 @@ import mixedserver.protocol.RPCException;
 import mixedserver.protocol.jsonrpc.client.Client;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,8 +63,9 @@ public class MainActivity extends SherlockActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.actionUserCenter:
-			DemoApplication app = (DemoApplication) getApplication();
-			boolean showUserCenter = app.isTokenRegisted();
+			Client client = Client.getClient(GlobalTools.SERVER_URL);
+			boolean showUserCenter = client.isLongtimeTokenRegisted();
+
 			if (showUserCenter) {
 				final Intent intent = new Intent(this,
 						UserCenterActivity_.class);
@@ -87,20 +85,6 @@ public class MainActivity extends SherlockActivity {
 		progressBarDencrypt.setVisibility(View.GONE);
 
 		buttonDencrypt.setVisibility(View.INVISIBLE);
-
-		// 在软件启动时，判断一下客户端有没有 Longtime Token
-		Client.getClient(GlobalTools.SERVER_URL).setDencryptMessage(true);
-		Client.getClient(GlobalTools.SERVER_URL).setEncryptMessage(false);
-
-		SharedPreferences settings = getSharedPreferences(
-				LoginActivity.PREFS_LOGIN, MODE_PRIVATE);
-		String token = settings.getString(AuthorityService.AS_LONGTIME_TOKEN,
-				null);
-		if (token != null) {
-			Client.getClient(GlobalTools.SERVER_URL).registLongtimeToken(token);
-			DemoApplication app = (DemoApplication) getApplication();
-			app.setTokenRegisted(true);
-		}
 	}
 
 	@Click(R.id.buttonEncrypt)

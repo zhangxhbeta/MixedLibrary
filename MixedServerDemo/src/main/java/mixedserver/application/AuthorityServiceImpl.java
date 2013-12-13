@@ -30,7 +30,7 @@ public class AuthorityServiceImpl implements AuthorityService,
 	}
 
 	@Override
-	public void logout(String token) throws RPCException {
+	public void logout() throws RPCException {
 		// 删掉token
 
 		// 会话属性干掉

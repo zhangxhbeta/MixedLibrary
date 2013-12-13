@@ -1,7 +1,6 @@
 package mixedserver.demo.controller;
 
 import mixedserver.application.AuthorityService;
-import mixedserver.demo.DemoApplication;
 import mixedserver.demo.R;
 import mixedserver.demo.service.LoginService;
 import mixedserver.demo.tools.AsyncResponseHandler;
@@ -70,9 +69,6 @@ public class UserCenterActivity extends SherlockActivity {
 		editor.remove(AuthorityService.AS_USER_NAME);
 
 		editor.commit();
-
-		DemoApplication app = (DemoApplication) getApplication();
-		app.setTokenRegisted(false);
 
 		// 调用service处理
 		loginService.logout(token, new AsyncResponseHandler() {

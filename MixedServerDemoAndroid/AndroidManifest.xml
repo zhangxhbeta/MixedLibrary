@@ -39,7 +39,7 @@
             android:parentActivityName="mixedserver.demo.controller.MainActivity_" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="mixedserver.demo.MainActivity_" />
+                android:value="mixedserver.demo.controller.MainActivity_" />
         </activity>
     </application>
 
