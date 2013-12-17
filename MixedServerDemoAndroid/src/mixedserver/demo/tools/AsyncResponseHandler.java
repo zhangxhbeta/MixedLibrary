@@ -80,6 +80,10 @@ abstract public class AsyncResponseHandler {
 		sendMessage(obtainMessage(SUCCESS_MESSAGE, new Object[] { response }));
 	}
 
+	public void sendSuccessMessage() {
+		sendMessage(obtainMessage(SUCCESS_MESSAGE, new Object[] {}));
+	}
+
 	public void sendFailureMessage(Throwable e, String message, long code) {
 		sendMessage(obtainMessage(FAILURE_MESSAGE, new Object[] { e, message,
 				code }));
@@ -112,7 +116,11 @@ abstract public class AsyncResponseHandler {
 		switch (msg.what) {
 		case SUCCESS_MESSAGE:
 			response = (Object[]) msg.obj;
-			handleSuccessMessage(response[0]);
+			if (response.length == 0) {
+				handleSuccessMessage(null);
+			} else {
+				handleSuccessMessage(response[0]);
+			}
 			break;
 		case FAILURE_MESSAGE:
 			response = (Object[]) msg.obj;

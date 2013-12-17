@@ -20,7 +20,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_user_center)
 public class UserCenterActivity extends SherlockActivity {
 
-	private LoginService loginService = new LoginService();
+	private LoginService loginService;
 
 	@ViewById
 	TextView textViewUsername;
@@ -40,6 +40,8 @@ public class UserCenterActivity extends SherlockActivity {
 
 	@AfterViews
 	void AfterViews() {
+		loginService = new LoginService();
+
 		SharedPreferences settings = getSharedPreferences(
 				LoginActivity.PREFS_LOGIN, MODE_PRIVATE);
 		String personName = null;

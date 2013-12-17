@@ -32,7 +32,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockActivity {
 
-	private EncryptionService encrytionService = new EncryptionService();
+	private EncryptionService encrytionService;
 
 	@ViewById
 	EditText editTextMessage;
@@ -81,6 +81,8 @@ public class MainActivity extends SherlockActivity {
 
 	@AfterViews
 	void afterViews() {
+		encrytionService = new EncryptionService();
+
 		progressBarEncrypt.setVisibility(View.GONE);
 		progressBarDencrypt.setVisibility(View.GONE);
 

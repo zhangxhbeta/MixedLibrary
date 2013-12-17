@@ -32,7 +32,7 @@ public class LoginActivity extends SherlockActivity {
 
 	public static final String PREFS_LOGIN = "PREFS_LOGIN";
 
-	private LoginService loginService = new LoginService();
+	private LoginService loginService;
 
 	@ViewById
 	EditText editTextUsername;
@@ -57,6 +57,8 @@ public class LoginActivity extends SherlockActivity {
 
 	@AfterViews
 	void afterViews() {
+		loginService = new LoginService();
+
 		getSherlock().getActionBar().setDisplayHomeAsUpEnabled(true);
 		progressBar.setVisibility(View.GONE);
 	}
