@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mixedserver.protocol.ModulProxy;
+import mixedserver.protocol.ModuleContext;
 import mixedserver.protocol.RPCException;
 import mixedserver.protocol.RPCMethod;
 import mixedserver.protocol.SessionRelatedModul;
@@ -49,6 +50,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
+import org.eclipse.jetty.util.log.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,12 +100,14 @@ public class RPC extends HttpServlet {
 
 	private ObjectMapper objectmapper;
 
+	boolean springAvaible = false;
+
 	JpoxyIgnore jpoxyignoreannotation;
 
 	private Pattern pattern = Pattern.compile("^(.*)\\.(.*)\\*$");
 
-	private void processClass(String moduleName, Class interfaceClass,
-			Class implementClass) throws InstantiationException,
+	private void processClass(String moduleName, Class<?> interfaceClass,
+			Class<?> implementClass) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		int classmodifiers = interfaceClass.getModifiers();
 		/*
@@ -131,7 +135,25 @@ public class RPC extends HttpServlet {
 					Object obj = null;
 
 					if (!rpcobjects.containsKey(implementClass.getName())) {
-						obj = implementClass.newInstance();
+
+						// 从Spring容器获取
+						if (springAvaible) {
+							obj = ModuleContext.getBean(implementClass);
+							if (obj != null) {
+								logger.info("get "
+										+ implementClass.getSimpleName()
+										+ " from spring context, use it");
+							}
+						}
+
+						if (obj == null) {
+							obj = implementClass.newInstance();
+							if (springAvaible) {
+								logger.info(implementClass.getSimpleName()
+										+ " not found in spring context, create it");
+							}
+						}
+
 						rpcobjects.put(implementClass.getName(), obj);
 					}
 
@@ -283,8 +305,16 @@ public class RPC extends HttpServlet {
 			}
 
 			rpcmethods = new HashMap<String, RPCMethod>();
-
 			rpcobjects = new HashMap<String, Object>();
+
+			try {
+				String contextAware = "org.springframework.context.ApplicationContextAware";
+				Class clsContextAware = Class.forName(contextAware);
+				springAvaible = true;
+				logger.info("find spring context, use it retrive module beans");
+			} catch (java.lang.ClassNotFoundException e) {
+				springAvaible = false;
+			}
 
 			String moduleName, implementClass, interfaceClass;
 			for (int o = 0; o < modules.size(); o++) {

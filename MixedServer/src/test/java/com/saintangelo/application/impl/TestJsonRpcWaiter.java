@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.saintangelo.application.Menu;
 import com.saintangelo.application.Person;
 import com.saintangelo.application.PersonExt;
@@ -12,6 +14,7 @@ import com.saintangelo.application.TestJsonRpc;
 import com.saintangelo.application.User;
 import com.saintangelo.application.UserGroup;
 
+@Service
 public class TestJsonRpcWaiter implements TestJsonRpc {
 
 	@Override
@@ -229,5 +232,17 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 	@Override
 	public byte[] returnBytesNull() {
 		return null;
+	}
+
+	@Override
+	public long addLong(long a, long b) {
+		// TODO Auto-generated method stub
+		return a + b;
+	}
+
+	@Override
+	public int addInt(int a, int b) {
+		// TODO Auto-generated method stub
+		return a + b;
 	}
 }

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.zhangxiaohui</groupId>
 		<artifactId>mixed-library</artifactId>
-		<version>1.1.2</version>
+		<version>2.0.0</version>
 	</parent>
 
 	<artifactId>mixed-server</artifactId>
@@ -13,7 +13,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty-version>7.6.12.v20130726</jetty-version>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.reporting.outputEncoding>UTF-8
+		</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencies>
@@ -156,6 +157,19 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
 			<version>${jetty-version}</version>
+		</dependency>
+
+		<!-- 依赖Spring来实现bean的管理 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.2.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>3.2.6.RELEASE</version>
+			<scope>runtime</scope>
 		</dependency>
 
 	</dependencies>

@@ -6,6 +6,9 @@ import java.util.Map;
 import mixedserver.application.AuthorityService;
 import mixedserver.protocol.RPCException;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override

@@ -13,6 +13,24 @@ public interface TestJsonRpc {
 	public float add(float a, float b);
 
 	/**
+	 * long
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public long addLong(long a, long b);
+
+	/**
+	 * int
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public int addInt(int a, int b);
+
+	/**
 	 * 字符串类型
 	 * 
 	 * @param a

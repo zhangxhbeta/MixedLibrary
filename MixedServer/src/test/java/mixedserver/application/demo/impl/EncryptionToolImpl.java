@@ -4,6 +4,9 @@ import mixedserver.application.demo.EncryptionTool;
 import mixedserver.protocol.RPCException;
 import mixedserver.tools.EncrpytionTool;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class EncryptionToolImpl implements EncryptionTool {
 
 	@Override

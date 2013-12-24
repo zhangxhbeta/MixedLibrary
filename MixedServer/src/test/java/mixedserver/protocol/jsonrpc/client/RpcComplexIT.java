@@ -51,5 +51,10 @@ public class RpcComplexIT extends AbstractedRPC {
 		UserGroup ug = jrpc.queryUserGroup(user);
 
 		assertEquals("jack所在的部门", ug.getName());
+
+		assertEquals(2, jrpc.addInt(1, 1));
+
+		long x = jrpc.addLong(1, 1);
+		assertEquals(2L, x);
 	}
 }
