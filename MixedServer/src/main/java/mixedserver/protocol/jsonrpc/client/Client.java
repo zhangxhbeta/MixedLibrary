@@ -221,6 +221,9 @@ public class Client implements InvocationHandler {
 		} else if (returnType.equals(java.lang.Integer.class)
 				|| returnType.equals(int.class)) {
 			return Integer.parseInt(rawResult.toString());
+		} else if (returnType.equals(java.lang.Long.class)
+				|| returnType.equals(long.class)) {
+			return Long.parseLong(rawResult.toString());
 		} else if (returnType.equals(java.lang.Double.class)
 				|| returnType.equals(double.class)) {
 			return Double.parseDouble(rawResult.toString());

@@ -825,7 +825,7 @@ public class RPC extends HttpServlet {
 					} else if (paramtypes[i].getName().matches("int")) {
 						methparams[i] = Integer.parseInt(request.getParamAt(i));
 					} else if (paramtypes[i].getName().matches("long")) {
-						methparams[i] = Long.getLong(request.getParamAt(i));
+						methparams[i] = Long.parseLong(request.getParamAt(i));
 					} else if (paramtypes[i].getName().matches(
 							"java.lang.String")) {
 						methparams[i] = request.getParamAt(i);
