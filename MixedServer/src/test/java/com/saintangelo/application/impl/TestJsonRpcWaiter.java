@@ -1,6 +1,8 @@
 package com.saintangelo.application.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,13 +238,41 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 
 	@Override
 	public long addLong(long a, long b) {
-		// TODO Auto-generated method stub
 		return a + b;
 	}
 
 	@Override
 	public int addInt(int a, int b) {
-		// TODO Auto-generated method stub
 		return a + b;
 	}
+
+	@Override
+	public Date returnDate(Date sendDate) {
+		System.out.println(sendDate);
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		return cal.getTime();
+	}
+
+	@Override
+	public Person returnPersonWithDate() {
+		Person p = new Person();
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		p.setDate(cal.getTime());
+		return p;
+	}
+
 }

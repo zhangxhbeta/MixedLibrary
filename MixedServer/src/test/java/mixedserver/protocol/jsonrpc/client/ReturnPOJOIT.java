@@ -1,5 +1,8 @@
 package mixedserver.protocol.jsonrpc.client;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.saintangelo.application.Menu;
 import com.saintangelo.application.Person;
 import com.saintangelo.application.TestJsonRpc;
@@ -27,6 +30,19 @@ public class ReturnPOJOIT extends AbstractedRPC {
 
 		String s = jrpc.returnStringNull();
 		assertNull(s);
+
+		p = jrpc.returnPersonWithDate();
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+
+		int compare = p.getDate().compareTo(cal.getTime());
+
+		assertEquals(0, compare);
 
 	}
 }

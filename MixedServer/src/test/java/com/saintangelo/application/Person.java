@@ -1,6 +1,7 @@
 package com.saintangelo.application;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Person implements Serializable {
 	/**
@@ -11,6 +12,16 @@ public class Person implements Serializable {
 	byte[] image;
 
 	Byte[] image2;
+
+	Date date;
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
 	public byte[] getImage() {
 		return image;

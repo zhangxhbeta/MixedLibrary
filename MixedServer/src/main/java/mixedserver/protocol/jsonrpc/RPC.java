@@ -952,7 +952,13 @@ public class RPC extends HttpServlet {
 			return;
 		}
 		String resultclassname = result.getClass().getName();
-		if (resultclassname.matches(".+\\..+")
+		if (resultclassname.equals("[B")) {
+			String jsonstr = objectmapper.writeValueAsString(result);
+			result = jsonstr;
+		} else if (resultclassname.equals("java.util.Date")) {
+			String jsonstr = objectmapper.writeValueAsString(result);
+			result = jsonstr;
+		} else if (resultclassname.matches(".+\\..+")
 				&& !resultclassname.matches("^org\\.json\\..+")
 				&& !resultclassname.matches("^java\\.lang\\..+")
 				&& !result.getClass().isPrimitive()) {
@@ -967,9 +973,6 @@ public class RPC extends HttpServlet {
 								+ jsonstr,
 						RPCException.PREDEFINED_ERROR_INTERNAL_ERROR);
 			}
-		} else if (resultclassname.equals("[B")) {
-			String jsonstr = objectmapper.writeValueAsString(result);
-			result = jsonstr;
 		}
 
 		response.setResult(result);

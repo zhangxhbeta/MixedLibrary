@@ -1,5 +1,6 @@
 package com.saintangelo.application;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -186,5 +187,19 @@ public interface TestJsonRpc {
 	 * @return
 	 */
 	public byte[] returnBytesNull();
+
+	/**
+	 * 测试返回日期类型
+	 * 
+	 * @return
+	 */
+	public Date returnDate(Date sendDate);
+
+	/**
+	 * 测试日期类型在对象里面
+	 * 
+	 * @return
+	 */
+	public Person returnPersonWithDate();
 
 }
