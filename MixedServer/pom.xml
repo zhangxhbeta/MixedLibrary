@@ -17,6 +17,13 @@
 		</project.reporting.outputEncoding>
 	</properties>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>synergian-repo</id>
+			<url>https://raw.github.com/synergian/wagon-git/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencies>
 		<!-- 日志 -->
 		<dependency>
@@ -183,6 +190,15 @@
 				</excludes>
 			</resource>
 		</resources>
+
+		<extensions>
+			<extension>
+				<groupId>ar.com.synergian</groupId>
+				<artifactId>wagon-git</artifactId>
+				<version>0.2.2</version>
+			</extension>
+		</extensions>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -246,4 +262,20 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>maven-repository</id>
+			<name>maven-repository</name>
+			<url>git:releases://git@bitbucket.org:/xhsoft/maven-repository.git
+			</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>maven-snapshot-repository</id>
+			<name>maven-snapshot-repository</name>
+			<url>git:snapshots://git@bitbucket.org:/xhsoft/maven-snapshot-repository.git
+			</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
