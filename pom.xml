@@ -10,8 +10,41 @@
   <name>mixed-library</name>
   <url>http://maven.apache.org</url>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>synergian-repo</id>
+      <url>https://raw.github.com/synergian/wagon-git/releases</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <modules>
     <module>MixedServer</module>
     <module>MixedServerDemo</module>
   </modules>
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>ar.com.synergian</groupId>
+        <artifactId>wagon-git</artifactId>
+        <version>0.2.2</version>
+      </extension>
+    </extensions>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>xhsoft-maven-repository</id>
+      <name>xhsoft-maven-repository</name>
+      <url>git:releases://git@bitbucket.org:/xhsoft/maven-repository.git
+      </url>
+    </repository>
+
+    <snapshotRepository>
+      <id>xhsoft-maven-snapshot-repository</id>
+      <name>xhsoft-maven-snapshot-repository</name>
+      <url>git:snapshots://git@bitbucket.org:/xhsoft/maven-snapshot-repository.git
+      </url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

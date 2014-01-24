@@ -265,15 +265,15 @@
 
 	<distributionManagement>
 		<repository>
-			<id>maven-repository</id>
-			<name>maven-repository</name>
+			<id>xhsoft-maven-repository</id>
+			<name>xsoft-maven-repository</name>
 			<url>git:releases://git@bitbucket.org:/xhsoft/maven-repository.git
 			</url>
 		</repository>
 
 		<snapshotRepository>
-			<id>maven-snapshot-repository</id>
-			<name>maven-snapshot-repository</name>
+			<id>xhsoft-maven-snapshot-repository</id>
+			<name>xhsoft-maven-snapshot-repository</name>
 			<url>git:snapshots://git@bitbucket.org:/xhsoft/maven-snapshot-repository.git
 			</url>
 		</snapshotRepository>
