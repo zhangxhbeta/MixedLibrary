@@ -48,7 +48,8 @@ public class EncryptionService {
 	 * 
 	 * @param handler
 	 */
-	public void dencrypt(final String message, final AsyncResponseHandler handler) {
+	public void dencrypt(final String message,
+			final AsyncResponseHandler handler) {
 		// 后台执行
 		BackgroundExecutor.execute(new Runnable() {
 

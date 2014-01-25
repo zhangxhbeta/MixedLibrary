@@ -45,12 +45,10 @@ import mixedserver.tools.EncrpytionTool;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
-import org.eclipse.jetty.util.log.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1118,8 +1116,16 @@ public class RPC extends HttpServlet {
 		} catch (IOException e) {
 			logger.error("gzip压缩异常:", e);
 		} finally {
-			IOUtils.closeQuietly(gzip);
-			IOUtils.closeQuietly(out);
+			try {
+				gzip.close();
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+			try {
+				out.close();
+			} catch (IOException e) {
+				logger.error("", e);
+			}
 		}
 
 		result = out.toByteArray();
