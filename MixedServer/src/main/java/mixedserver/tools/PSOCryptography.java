@@ -4,12 +4,14 @@ package mixedserver.tools;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.Key;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
 
@@ -30,7 +32,7 @@ public class PSOCryptography {
 
   static
   {
-    java.security.Security.addProvider(new com.sun.crypto.provider.SunJCE());
+    Security.addProvider(new BouncyCastleProvider());
   }
 
   /**
