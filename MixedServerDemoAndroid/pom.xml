@@ -10,20 +10,6 @@
 	<groupId>com.zhangxiaohui</groupId>
 	<version>2.0.0</version>
 
-	<repositories>
-		<repository>
-			<id>xhsoft-maven-repository</id>
-			<name>xhsoft-maven-repository</name>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<url>https://api.bitbucket.org/1.0/repositories/xhsoft/maven-repository/raw/releases</url>
-		</repository>
-	</repositories>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform.version>4.1.1.4</platform.version>
@@ -40,7 +26,15 @@
 		<dependency>
 			<groupId>com.github.tony19</groupId>
 			<artifactId>logback-android-classic</artifactId>
-			<version>1.0.7-1</version>
+			<version>1.0.10-2</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.5</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -63,49 +57,29 @@
 			<version>2.7.1</version>
 		</dependency>
 
+		<!-- 加密 -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.46</version>
+		</dependency>
+
+		<!-- jackson -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.zhangxiaohui</groupId>
 			<artifactId>mixed-server</artifactId>
 			<version>2.0.0</version>
-
-			<exclusions>
-
-				<!-- commons系列 -->
-				<exclusion>
-					<groupId>commons-collections</groupId>
-					<artifactId>commons-collections</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>commons-codec</groupId>
-					<artifactId>commons-codec</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>commons-configuration</groupId>
-					<artifactId>commons-configuration</artifactId>
-
-				</exclusion>
-				<exclusion>
-					<groupId>commons-beanutils</groupId>
-					<artifactId>commons-beanutils</artifactId>
-				</exclusion>
-
-				<!-- reflections -->
-				<exclusion>
-					<groupId>org.reflections</groupId>
-					<artifactId>reflections</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>jcl-over-slf4j</artifactId>
-				</exclusion>
-
-			</exclusions>
-
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/mixed-server-2.0.0.jar</systemPath>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<outputDirectory>bin/classes</outputDirectory>
 		<pluginManagement>
