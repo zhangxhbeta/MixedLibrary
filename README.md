@@ -1,6 +1,6 @@
 #MixedLibrary
 
-说明文档还没时间弄，不过有两个全面的Demo
+说明文档还没时间弄，不过有两个全面的Demo。项目最初来自于另一个项目[JProxy](https://code.google.com/p/jpoxy/)，但这个项目并没有支持json-rpc2.0规范，也没有批量操作、Spring支持等等，现在可以说是思路类似，但功能完全不同的两个项目了
 
 ##功能说明
 
