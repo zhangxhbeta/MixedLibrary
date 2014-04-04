@@ -283,6 +283,15 @@ public class Client implements InvocationHandler {
 	}
 
 	/**
+	 * 返回用户姓名，按照约定取 AS_USER_NAME
+	 * 
+	 * @return
+	 */
+	public String getUsername() {
+		return (String) session.getAttribute(SESSION_USERNAME);
+	}
+
+	/**
 	 * 返回域代码（登录时填写的）
 	 * 
 	 * @return
@@ -371,7 +380,16 @@ public class Client implements InvocationHandler {
 			} else {
 				result = auth.login(logincode, password);
 			}
-			session.setAttribute(SESSION_USERNAME, result);
+
+			if (result.containsKey(AuthorityService.AS_USER_NAME)) {
+				session.setAttribute(SESSION_USERNAME,
+						result.get(AuthorityService.AS_USER_NAME));
+			}
+
+			for (String o : result.keySet()) {
+				session.setAttribute(o, result.get(o));
+			}
+
 			session.setAttribute(SESSION_LOGINCODE, logincode);
 
 			if (domainId != null) {
