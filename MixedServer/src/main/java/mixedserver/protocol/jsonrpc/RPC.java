@@ -116,7 +116,7 @@ public class RPC extends HttpServlet {
 				|| !Modifier.isPublic(classmodifiers)
 
 		) {
-			logger.debug("skipping abstract class");
+			logger.debug("Skipping abstract class");
 			return;
 		}
 
@@ -138,7 +138,7 @@ public class RPC extends HttpServlet {
 						if (springAvaible) {
 							obj = ModuleContext.getBean(implementClass);
 							if (obj != null) {
-								logger.info("get "
+								logger.info("Got "
 										+ implementClass.getSimpleName()
 										+ " from spring context, use it");
 							}
@@ -190,7 +190,7 @@ public class RPC extends HttpServlet {
 
 			String methodsig = generateMethodSignature(moduleName, methods[i]);
 
-			logger.debug("methodsig:" + methodsig);
+			logger.debug("Methodsig:" + methodsig);
 
 			if (methodsig == null) {
 				continue;
@@ -309,7 +309,7 @@ public class RPC extends HttpServlet {
 				String contextAware = "org.springframework.context.ApplicationContextAware";
 				Class clsContextAware = Class.forName(contextAware);
 				springAvaible = true;
-				logger.info("find spring context, use it retrive module beans");
+				logger.info("Find spring context, use it retrive module beans");
 			} catch (java.lang.ClassNotFoundException e) {
 				springAvaible = false;
 			}
@@ -321,7 +321,7 @@ public class RPC extends HttpServlet {
 				interfaceClass = node.getString("interface");
 				implementClass = node.getString("class");
 
-				logger.debug("examining class: " + interfaceClass);
+				logger.debug("Examining class: " + interfaceClass);
 
 				Matcher matcher = pattern.matcher(interfaceClass);
 				boolean matchFound = matcher.find();
@@ -509,7 +509,8 @@ public class RPC extends HttpServlet {
 	 * @throws JSONException
 	 */
 	public JSONObject listrpcmethods() {
-		logger.info("listing rpc methods");
+		logger.info("Listing rpc methods");
+
 		JSONObject result = new JSONObject();
 		Iterator<String> iterator = rpcmethods.keySet().iterator();
 		try {
@@ -614,7 +615,8 @@ public class RPC extends HttpServlet {
 		}
 
 		if (PRINT_MESSAGE) {
-			logger.info("send message: ");
+			logger.info("======================================================================");
+			logger.info("Send message: ");
 			logger.info(outputStr);
 		}
 
@@ -828,7 +830,7 @@ public class RPC extends HttpServlet {
 		int param_count = request.getParamCount();
 		String methodsig = method + ":" + param_count;
 
-		logger.debug("looking for methodsig: " + methodsig);
+		logger.debug("Looking for methodsig: " + methodsig);
 
 		Object result = new Object();
 		RPCMethod m = null;
@@ -846,8 +848,8 @@ public class RPC extends HttpServlet {
 				Type[] types = m.getGenericParameterTypes();
 
 				for (int i = 0; i < paramtypes.length; i++) {
-					logger.info(paramtypes[i].getName());
 
+					// 解析每个参数
 					if (paramtypes[i].getName().matches("float")) {
 						methparams[i] = Float.parseFloat(request.getParamAt(i));
 					} else if (paramtypes[i].getName().matches("int")) {
@@ -913,7 +915,7 @@ public class RPC extends HttpServlet {
 					RPCException.PREDEFINED_ERROR_INVALID_PARAMS);
 		}
 
-		logger.debug("running methodsig: " + methodsig + " param_count:"
+		logger.debug("Running methodsig: " + methodsig + " param_count:"
 				+ param_count);
 
 		// 方法就绪，可以执行
@@ -1004,7 +1006,8 @@ public class RPC extends HttpServlet {
 		}
 
 		if (PRINT_MESSAGE && body != null) {
-			logger.info("received message: ");
+			logger.info("======================================================================");
+			logger.info("Received message: ");
 			logger.info(body);
 		}
 
