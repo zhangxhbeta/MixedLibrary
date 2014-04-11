@@ -615,8 +615,7 @@ public class RPC extends HttpServlet {
 		}
 
 		if (PRINT_MESSAGE) {
-			logger.info("======================================================================");
-			logger.info("Send message: ");
+			logger.info("<<< Send to client: ");
 			logger.info(outputStr);
 		}
 
@@ -1006,8 +1005,8 @@ public class RPC extends HttpServlet {
 		}
 
 		if (PRINT_MESSAGE && body != null) {
-			logger.info("======================================================================");
-			logger.info("Received message: ");
+			logger.info("");
+			logger.info(">>> Received from client: ");
 			logger.info(body);
 		}
 
