@@ -4,6 +4,14 @@ import java.util.Map;
 
 import mixedserver.protocol.RPCException;
 
+/**
+ * 请使用新版本的认证服务 AuthenticationManagement 接口
+ * 
+ * @deprecated use {@link AuthenticationManagement} instead.
+ * @author zhangxiaohui
+ * 
+ */
+@Deprecated
 public interface AuthorityService {
 	// 用户名
 	public static final String AS_USER_NAME = "AS_USER_NAME";

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import mixedserver.application.AuthResult;
+import mixedserver.application.AuthenticationManagement;
 import mixedserver.application.AuthorityService;
 import mixedserver.protocol.RPCException;
 import mixedserver.tools.EncrpytionTool;
@@ -49,7 +51,7 @@ public class Client implements InvocationHandler {
 
 	private boolean longtimeTokenRegisted = false;
 
-	private String rpcNameAuthority = "authority";
+	private String loginRpcName = "authority";
 
 	/**
 	 * Maintain a unique id for each message
@@ -350,10 +352,27 @@ public class Client implements InvocationHandler {
 	 * @param password
 	 * @return
 	 * @throws RPCException
+	 * @Deprecated 请用 login2 来使用新的接口
 	 */
+	@Deprecated
 	public Map<String, String> login(String logincode, String password)
 			throws RPCException {
-		return login(null, logincode, password);
+		return loginOld(null, logincode, password);
+	}
+
+	/**
+	 * 登录
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws RPCException
+	 * @Deprecated 请用 login2 来使用新的接口
+	 */
+	@Deprecated
+	public Map<String, String> login(String domainId, String logincode,
+			String password) throws RPCException {
+		return loginOld(null, logincode, password);
 	}
 
 	/**
@@ -364,14 +383,15 @@ public class Client implements InvocationHandler {
 	 * @param password
 	 * @return
 	 * @throws RPCException
+	 * @Deprecated 请用 login2 来使用新的接口
 	 */
-	public Map<String, String> login(String domainId, String logincode,
+	@Deprecated
+	private Map<String, String> loginOld(String domainId, String logincode,
 			String password) throws RPCException {
 
 		session.removeAllAttribute();
 
-		AuthorityService auth = openProxy(rpcNameAuthority,
-				AuthorityService.class);
+		AuthorityService auth = openProxy(loginRpcName, AuthorityService.class);
 
 		try {
 			Map<String, String> result = null;
@@ -403,13 +423,73 @@ public class Client implements InvocationHandler {
 	}
 
 	/**
+	 * 登录
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws RPCException
+	 */
+	public AuthResult login2(String logincode, String password,
+			boolean rememberMe) throws RPCException {
+		return login2(null, logincode, password, rememberMe);
+	}
+
+	/**
+	 * 登录
+	 * 
+	 * @param domainId
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws RPCException
+	 */
+	public AuthResult login2(String domainId, String logincode,
+			String password, boolean rememberMe) throws RPCException {
+
+		session.removeAllAttribute();
+
+		AuthenticationManagement auth = openProxy(loginRpcName,
+				AuthenticationManagement.class);
+
+		try {
+			AuthResult result = null;
+			if (domainId != null) {
+				result = auth.login(domainId, logincode, password, rememberMe);
+			} else {
+				result = auth.login(logincode, password, rememberMe);
+			}
+
+			if (result.getUsername() != null) {
+				session.setAttribute(SESSION_USERNAME, result.getUsername());
+			}
+
+			if (result.getAllInfoKey() != null) {
+				for (String key : result.getAllInfoKey()) {
+					session.setAttribute(key, result.getInfo(key));
+				}
+			}
+
+			session.setAttribute(SESSION_LOGINCODE, logincode);
+
+			if (domainId != null) {
+				session.setAttribute(SESSION_DOMAINCODE, domainId);
+			}
+
+			return result;
+		} finally {
+			closeProxy(auth);
+		}
+	}
+
+	/**
 	 * 注销
 	 * 
 	 * @throws RPCException
 	 */
 	public void logout() throws RPCException {
-		AuthorityService auth = openProxy(rpcNameAuthority,
-				AuthorityService.class);
+		AuthenticationManagement auth = openProxy(loginRpcName,
+				AuthenticationManagement.class);
 
 		try {
 			auth.logout();
@@ -446,8 +526,8 @@ public class Client implements InvocationHandler {
 		this.dencryptMessage = dencryptMessage;
 	}
 
-	public void setRpcNameAuthority(String rpcNameAuthority) {
-		this.rpcNameAuthority = rpcNameAuthority;
+	public void setLoginRpcName(String rpcName) {
+		this.loginRpcName = rpcName;
 	}
 
 	/** Manual instantiation of HashMap<String, Object> */
