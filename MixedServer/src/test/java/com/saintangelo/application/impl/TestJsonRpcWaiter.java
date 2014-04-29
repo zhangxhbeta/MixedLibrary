@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.saintangelo.application.GenericClassType;
 import com.saintangelo.application.Menu;
 import com.saintangelo.application.Person;
 import com.saintangelo.application.PersonExt;
@@ -273,6 +274,75 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 
 		p.setDate(cal.getTime());
 		return p;
+	}
+
+	@Override
+	public GenericClassType<Person> returnGenericType() {
+
+		GenericClassType<Person> g = new GenericClassType<Person>();
+		g.setName("Test");
+
+		List<Person> persons = new ArrayList<Person>();
+
+		Person p = new Person();
+		p.setDate(new Date());
+		persons.add(p);
+		g.setPersons(persons);
+
+		return g;
+	}
+
+	@Override
+	public GenericClassType<List<Person>> returnNestCustomGenericType() {
+
+		GenericClassType<List<Person>> g = new GenericClassType<List<Person>>();
+
+		g.setName("Test");
+
+		List<Person> persons = new ArrayList<Person>();
+
+		Person p = new Person();
+		p.setDate(new Date());
+		persons.add(p);
+
+		List<List<Person>> superPersons = new ArrayList<List<Person>>();
+		superPersons.add(persons);
+
+		g.setPersons(superPersons);
+
+		return g;
+
+	}
+
+	@Override
+	public List<GenericClassType<Person>> returnNestListGenericType() {
+
+		GenericClassType<Person> g1 = returnGenericType();
+		GenericClassType<Person> g2 = returnGenericType();
+		GenericClassType<Person> g3 = returnGenericType();
+
+		List<GenericClassType<Person>> superList = new ArrayList<GenericClassType<Person>>();
+		superList.add(g1);
+		superList.add(g2);
+		superList.add(g3);
+
+		return superList;
+	}
+
+	@Override
+	public List<GenericClassType<List<Person>>> returnSuperNestGenericType() {
+
+		GenericClassType<List<Person>> g1 = returnNestCustomGenericType();
+		GenericClassType<List<Person>> g2 = returnNestCustomGenericType();
+		GenericClassType<List<Person>> g3 = returnNestCustomGenericType();
+
+		List<GenericClassType<List<Person>>> superList = new ArrayList<GenericClassType<List<Person>>>();
+		superList.add(g1);
+		superList.add(g2);
+		superList.add(g3);
+
+		return superList;
+
 	}
 
 }

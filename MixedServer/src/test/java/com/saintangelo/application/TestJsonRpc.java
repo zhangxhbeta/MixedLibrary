@@ -202,4 +202,32 @@ public interface TestJsonRpc {
 	 */
 	public Person returnPersonWithDate();
 
+	/**
+	 * 测试返回 pojo 范型
+	 * 
+	 * @return
+	 */
+	public GenericClassType<Person> returnGenericType();
+
+	/**
+	 * 测试返回 pojo 范型
+	 * 
+	 * @return
+	 */
+	public GenericClassType<List<Person>> returnNestCustomGenericType();
+
+	/**
+	 * 测试返回 List 嵌套范型 pojo 范型
+	 * 
+	 * @return
+	 */
+	public List<GenericClassType<Person>> returnNestListGenericType();
+
+	/**
+	 * 测试返回 List 嵌套范型 pojo 范型
+	 * 
+	 * @return
+	 */
+	public List<GenericClassType<List<Person>>> returnSuperNestGenericType();
+
 }

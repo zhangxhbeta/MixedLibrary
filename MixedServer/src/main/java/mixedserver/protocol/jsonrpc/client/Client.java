@@ -198,20 +198,32 @@ public class Client implements InvocationHandler {
 		}
 
 		if (generic) {
+
+			Class<?>[] paramTypes = new Class<?>[actualTypes.length];
+			for (int i = 0; i < actualTypes.length; i++) {
+				try {
+					paramTypes[i] = (Class<?>) actualTypes[i];
+				} catch (ClassCastException e) {
+					throw new RPCException("错误的泛型用法，目前仅支持非嵌套的范型, "
+							+ e.getMessage());
+				}
+			}
+
 			TypeFactory factory = objectmapper.getTypeFactory();
 			if (returnType.equals(java.util.List.class)
 					&& actualTypes.length == 1) {
 				return objectmapper.readValue(rawResult.toString(), factory
-						.constructCollectionType(returnType,
-								(Class<?>) actualTypes[0]));
+						.constructCollectionType(returnType, paramTypes[0]));
 			} else if (returnType.equals(java.util.Map.class)
 					&& actualTypes.length == 2) {
 				return objectmapper.readValue(rawResult.toString(), factory
-						.constructMapType(returnType,
-								(Class<?>) actualTypes[0],
-								(Class<?>) actualTypes[1]));
+						.constructMapType(returnType, paramTypes[0],
+								paramTypes[1]));
 			} else {
-				throw new RPCException("不支持的返回值泛型，目前仅支持 List、Map");
+				return objectmapper
+						.readValue(rawResult.toString(),
+								factory.constructParametricType(returnType,
+										paramTypes));
 			}
 		}
 
