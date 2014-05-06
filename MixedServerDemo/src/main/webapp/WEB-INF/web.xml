@@ -24,7 +24,7 @@
 		<!-- 当空请求时打印方法列表 -->
 		<init-param>
 			<param-name>expose_methods</param-name>
-			<param-value>false</param-value>
+			<param-value>true</param-value>
 		</init-param>
 
 		<!-- 打印消息 -->

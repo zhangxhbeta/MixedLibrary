@@ -45,6 +45,7 @@ import mixedserver.tools.EncrpytionTool;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.lang.WordUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -54,7 +55,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.reflections.Reflections;
-import org.reflections.scanners.TypesScanner;
+import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -111,59 +112,82 @@ public class RPC extends HttpServlet {
 		/*
 		 * 必须有接口类和实现类，方法不能是静态方法，不能是私有接口
 		 */
-		if ((Modifier.isAbstract(classmodifiers) && !Modifier
-				.isInterface(classmodifiers))
-				|| !Modifier.isPublic(classmodifiers)
-
-		) {
-			logger.debug("Skipping abstract class");
+		if (!Modifier.isInterface(classmodifiers)) {
+			logger.info("Skipping class, not interface");
 			return;
 		}
 
-		// 预先实例化实现类（如果 PERSIST_CLASS == true）
+		if (Modifier.isStatic(classmodifiers)) {
+			logger.info("Skipping class, 静态类");
+			return;
+		}
+
+		if (implementClass == null && !springAvaible) { // 没有指定实现类
+			logger.info("Skipping class, 当前环境必须配置实现类");
+			return;
+		}
+
 		boolean requireProxy = false;
-		if (!Modifier.isStatic(classmodifiers)) {
-			try {
+		try {
 
-				if (isImplementsInterface(implementClass, ModulProxy.class)) {
-					requireProxy = true;
-				}
-
-				if (PERSIST_CLASS) {
-					Object obj = null;
-
-					if (!rpcobjects.containsKey(implementClass.getName())) {
-
-						// 从Spring容器获取
-						if (springAvaible) {
-							obj = ModuleContext.getBean(implementClass);
-							if (obj != null) {
-								logger.info("Got "
-										+ implementClass.getSimpleName()
-										+ " from spring context, use it");
-							}
-						}
-
-						if (obj == null) {
-							obj = implementClass.newInstance();
-							if (springAvaible) {
-								logger.info(implementClass.getSimpleName()
-										+ " not found in spring context, create it");
-							}
-						}
-
-						rpcobjects.put(implementClass.getName(), obj);
-					}
-
-					if (obj != null
-							&& implementsRPCEventListener(implementClass)) {
-						addMessageListener((JSONRPCEventListener) obj);
-					}
-				}
-			} catch (InstantiationException ie) {
-				logger.error("Caught InstantiationException", ie);
-				return;
+			if (implementClass != null
+					&& isImplementsInterface(implementClass, ModulProxy.class)) {
+				requireProxy = true;
 			}
+
+			// 预先实例化实现类（如果 PERSIST_CLASS == true）
+			if (PERSIST_CLASS) {
+
+				Object obj = null;
+
+				// 如果没有指定实现类，去spring容器里面找一下实现类
+				if (implementClass == null && springAvaible) {
+					obj = ModuleContext.getBean(interfaceClass);
+					if (obj != null) {
+						logger.info("Got class "
+								+ interfaceClass.getSimpleName()
+								+ " from spring context, use it");
+
+						implementClass = obj.getClass();
+					}
+				}
+
+				if (implementClass == null) {
+					logger.error("无法处理 " + interfaceClass.getName()
+							+ " ，找不到对应的实现类，跳过该接口");
+					return;
+				}
+
+				// 查看 rpcobjects 里面有无记录该实现类
+				if (!rpcobjects.containsKey(implementClass.getName())) {
+
+					// 从Spring容器获取
+					if (springAvaible) {
+						obj = ModuleContext.getBean(implementClass);
+						if (obj != null) {
+							logger.info("Got " + implementClass.getSimpleName()
+									+ " from spring context, use it");
+						}
+					}
+
+					if (obj == null) {
+						obj = implementClass.newInstance();
+						if (springAvaible) {
+							logger.info(implementClass.getSimpleName()
+									+ " not found in spring context, create it");
+						}
+					}
+
+					rpcobjects.put(implementClass.getName(), obj);
+				}
+
+				if (obj != null && implementsRPCEventListener(implementClass)) {
+					addMessageListener((JSONRPCEventListener) obj);
+				}
+			}
+		} catch (InstantiationException ie) {
+			logger.error("Caught InstantiationException", ie);
+			return;
 		}
 
 		// 处理 RPC 方法
@@ -321,13 +345,31 @@ public class RPC extends HttpServlet {
 				interfaceClass = node.getString("interface");
 				implementClass = node.getString("class");
 
+				if (interfaceClass == null) {
+					continue;
+				}
+
 				logger.debug("Examining class: " + interfaceClass);
 
 				Matcher matcher = pattern.matcher(interfaceClass);
 				boolean matchFound = matcher.find();
-
-				if (isImplementsInterface(Class.forName(implementClass),
-						ModulProxy.class) && matchFound) {
+				
+				if (matchFound) { // 通配符处理
+					
+					// 是否可以处理接口声明为通配符
+					boolean multiInterfaceAllSet = implementClass != null
+							&& isImplementsInterface(Class.forName(implementClass),
+									ModulProxy.class) || implementClass == null
+							&& springAvaible;
+					
+					if (!multiInterfaceAllSet) {
+						// 错误的通配符配置
+						logger.info("Processing: " + interfaceClass
+								+ "，接口配置错误，当前环境下接口不能为通配符");
+						continue;
+					}
+					
+					// 如果可以处理通配符，并且接口指定的确实为通配符
 					logger.debug("Looking for classes in package: "
 							+ interfaceClass);
 
@@ -336,10 +378,10 @@ public class RPC extends HttpServlet {
 									.setUrls(
 											ClasspathHelper.forPackage(matcher
 													.group(1))).setScanners(
-											new TypesScanner()));
+											new SubTypesScanner(false)));
 
 					Set<String> stringSet = reflections.getStore()
-							.get(TypesScanner.class).keySet();
+							.get(SubTypesScanner.class).keySet();
 					for (String key_str : stringSet) {
 						String additional = "";
 						if (matcher.group(2).length() > 0)
@@ -348,15 +390,37 @@ public class RPC extends HttpServlet {
 								+ ".*")
 								&& !key_str.matches(".*\\$.*")) {
 							logger.info("Processing: " + key_str);
-							processClass(moduleName, Class.forName(key_str),
-									Class.forName(implementClass));
+
+							// 模块名默认用接口名首字母变小写
+							int lastIndex = key_str.lastIndexOf('.');
+							String name = key_str.substring(lastIndex + 1);
+							moduleName = WordUtils.uncapitalize(name);
+
+							if (implementClass != null)
+								processClass(moduleName,
+										Class.forName(key_str),
+										Class.forName(implementClass));
+							else
+								processClass(moduleName,
+										Class.forName(key_str), null);
 						}
 					}
 
 				} else {
+					// 模块名默认用接口名首字母变小写
+					if (moduleName == null) {
+						int lastIndex = interfaceClass.lastIndexOf('.');
+						String name = interfaceClass.substring(lastIndex + 1);
+						moduleName = WordUtils.uncapitalize(name);
+					}
+
 					logger.info("Processing: " + interfaceClass);
-					processClass(moduleName, Class.forName(interfaceClass),
-							Class.forName(implementClass));
+					if (implementClass != null)
+						processClass(moduleName, Class.forName(interfaceClass),
+								Class.forName(implementClass));
+					else
+						processClass(moduleName, Class.forName(interfaceClass),
+								null);
 				}
 
 			}
