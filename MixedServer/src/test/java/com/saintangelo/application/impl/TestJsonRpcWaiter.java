@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mixedserver.protocol.RPCException;
+
 import org.springframework.stereotype.Service;
 
 import com.saintangelo.application.GenericClassType;
@@ -343,6 +345,19 @@ public class TestJsonRpcWaiter implements TestJsonRpc {
 
 		return superList;
 
+	}
+
+	@Override
+	public void nullPoint() throws RPCException {
+		if (1 > 0)
+			throw new NullPointerException(
+					"you got it, i am null point exception");
+	}
+
+	@Override
+	public void runtimeException() throws RPCException {
+		if (1 > 0)
+			throw new RuntimeException("you got it, i am runtime exception");
 	}
 
 }

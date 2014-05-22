@@ -353,22 +353,23 @@ public class RPC extends HttpServlet {
 
 				Matcher matcher = pattern.matcher(interfaceClass);
 				boolean matchFound = matcher.find();
-				
+
 				if (matchFound) { // 通配符处理
-					
+
 					// 是否可以处理接口声明为通配符
 					boolean multiInterfaceAllSet = implementClass != null
-							&& isImplementsInterface(Class.forName(implementClass),
+							&& isImplementsInterface(
+									Class.forName(implementClass),
 									ModulProxy.class) || implementClass == null
 							&& springAvaible;
-					
+
 					if (!multiInterfaceAllSet) {
 						// 错误的通配符配置
 						logger.info("Processing: " + interfaceClass
 								+ "，接口配置错误，当前环境下接口不能为通配符");
 						continue;
 					}
-					
+
 					// 如果可以处理通配符，并且接口指定的确实为通配符
 					logger.debug("Looking for classes in package: "
 							+ interfaceClass);
@@ -760,13 +761,17 @@ public class RPC extends HttpServlet {
 			for (Request request : rpcRequests) {
 
 				Response response = getResponseFromRequestId(request);
+
 				try {
 					handleRequest(req, request, response);
 				} catch (InvocationTargetException ite) {
 					// 处理代理里面的异常
-					if (ite.getCause() != null) {
-						response = getResponseFromRequestId(request,
-								ite.getCause());
+					Throwable throwable = ite.getCause();
+					if (throwable != null) {
+
+						logger.error("调用 jssonrpc 实现时出现异常，", throwable);
+
+						response = getResponseFromRequestId(request, throwable);
 						handleException(response);
 					}
 				} catch (Exception e) {

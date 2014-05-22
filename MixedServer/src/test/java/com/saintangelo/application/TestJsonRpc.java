@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import mixedserver.protocol.RPCException;
+
 public interface TestJsonRpc {
 	/**
 	 * 普通原生数据类型
@@ -229,5 +231,16 @@ public interface TestJsonRpc {
 	 * @return
 	 */
 	public List<GenericClassType<List<Person>>> returnSuperNestGenericType();
+
+	/**
+	 * 测试空指针异常
+	 * 
+	 */
+	public void nullPoint() throws RPCException;
+
+	/**
+	 * 测试运行时异常
+	 */
+	public void runtimeException() throws RPCException;
 
 }
