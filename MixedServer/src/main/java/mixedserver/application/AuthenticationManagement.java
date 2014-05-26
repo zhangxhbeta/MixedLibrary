@@ -39,4 +39,13 @@ public interface AuthenticationManagement {
 	 * @throws RPCException
 	 */
 	public void logout() throws RPCException;
+
+	/**
+	 * 获取记住的用户
+	 * 
+	 * @return
+	 * @throws RPCException
+	 */
+	public AuthResult getRememberdUser() throws RPCException;
+
 }
