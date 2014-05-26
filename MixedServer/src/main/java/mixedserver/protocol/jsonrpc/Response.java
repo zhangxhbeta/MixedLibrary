@@ -70,13 +70,29 @@ public class Response {
 		setVersion();
 
 		JSONObject error = new JSONObject();
+
+		// PUT MESSAGE
+		error.put("message", t.getMessage());
+
 		if (t.getClass().getName().endsWith("RPCException")) {
 			RPCException je = (RPCException) t;
 			error.put("code", je.getCode());
+		} else if (t.getClass().getName().endsWith("AuthenticationException")) {
+			// 未登录或者没有权限
+			error.put("code", RPCException.ERROR_CODE_INVALID_SESSION);
+			if (t.getMessage() == null || t.getMessage().length() == 0) {
+				error.put("message", "未登录或者没有相应权限");
+			}
+		} else if (t.getClass().getName().endsWith("AuthorizationException")) {
+			// 没有权限
+			error.put("code", RPCException.ERROR_CODE_AUTHZ_ERROR);
+			if (t.getMessage() == null || t.getMessage().length() == 0) {
+				error.put("message", "没有相应权限");
+			}
 		} else {
-			error.put("code", -32603);
+			// 其他内部错误
+			error.put("code", RPCException.PREDEFINED_ERROR_INTERNAL_ERROR);
 		}
-		error.put("message", t.getMessage());
 
 		JSONObject errorData = new JSONObject();
 		errorData.put("classname", t.getClass().getName());
