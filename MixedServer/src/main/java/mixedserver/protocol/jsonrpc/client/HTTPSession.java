@@ -99,7 +99,7 @@ public class HTTPSession implements Session {
 
 	private int soTimeout = 3 * 60 * 1000; // 读超时3分钟
 
-	private int connectionTimeout = 30 * 1000; // 连接超时3秒
+	private int connectionTimeout = 30 * 1000; // 连接超时30秒
 
 	private Hashtable attributes;
 
