@@ -102,7 +102,7 @@ v2.0.1 发布说明
 1. 去掉commons-io.jar commons-lang.jar 依赖
 2. bug修复：客户端登录以后，往session放置用户名密码错误
 
-v2.0，发布说明
+v2.0 发布说明
 
 1. 模块实现上支持Spring注解
 2. 添加 java.util.Date 的支持，Date会映射到 long 类型的时间戳
