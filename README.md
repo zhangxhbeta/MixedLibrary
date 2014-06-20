@@ -78,15 +78,9 @@ MixedServerDemo 是服务端演示，运行命令后会在 http://localhost:8080
 
 MixedServerDemoAndroid 是android演示，需要提前运行 MixedServerDemo，同时需要修改 MixedServerDemoAndroid/src/mixedserver/demo/tools/GlobalTools.java 里面的接口地址
 
-##版本说明
+##版本下载
 
-v2.2.3 发布说明
-
-1. 配置文件简化，可以仅配置接口，实现类从Spring容器获取
-2. 可以配置一个包下面所有接口， com.somepackage.*，实现依然从 Spring 容器获取
-3. 模块配置时，name为可选项，name 直接取接口名字，将首字母变小写
-4. 登录接口添加记住用户方法
-5. 针对 Apache shiro 的权限检查异常，转换为对应错误码
+参见 [下载](https://github.com/zhangxhbeta/MixedLibrary/releases) 页面 
 
 v2.1.0 发布说明
 
