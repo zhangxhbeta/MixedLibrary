@@ -1,9 +1,7 @@
 package mixedserver.protocol.jsonrpc.client;
 
-import java.util.Map;
-
+import mixedserver.application.SimpleAuthResult;
 import junit.framework.TestCase;
-import mixedserver.application.AuthorityService;
 
 public class AbstractedRPC extends TestCase {
 
@@ -23,12 +21,12 @@ public class AbstractedRPC extends TestCase {
 		client.setDencryptMessage(true);
 		client.setEncryptMessage(false);
 
-		Map<String, String> au = client.login("SA", "");
+		SimpleAuthResult result = client.login2("", "", false);
 
-		if (au.containsKey(AuthorityService.AS_LONGTIME_TOKEN)) {
-			client.registLongtimeToken(au
-					.get(AuthorityService.AS_LONGTIME_TOKEN));
-		}
+		assertEquals("托尔斯泰", result.getUsername());
+
+		String userId = result.getInfo("userId");
+		assertEquals("1", userId);
 	}
 
 	protected void tearDown() throws Exception {

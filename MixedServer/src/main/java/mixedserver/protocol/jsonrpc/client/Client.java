@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 
 import mixedserver.application.AuthenticationManagement;
 import mixedserver.application.AuthorityService;
@@ -476,8 +477,9 @@ public class Client implements InvocationHandler {
 				session.setAttribute(SESSION_USERNAME, result.getUsername());
 			}
 
-			if (result.getAllInfoKey() != null) {
-				for (String key : result.getAllInfoKey()) {
+			if (result.getAllInfo() != null) {
+				Set<String> allInfoKey = result.getAllInfo().keySet();
+				for (String key : allInfoKey) {
 					session.setAttribute(key, result.getInfo(key));
 				}
 			}

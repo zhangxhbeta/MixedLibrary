@@ -13,8 +13,9 @@
 
 	<module>
 		<name>authority</name>
-		<interface>mixedserver.application.AuthorityService</interface>
-		<class>com.saintangelo.application.impl.AuthorityServiceImpl</class>
+		<interface>mixedserver.application.AuthenticationManagement</interface>
+		<class>mixedserver.application.demo.impl.AuthenticationManagementImpl
+		</class>
 	</module>
 
 	<module>

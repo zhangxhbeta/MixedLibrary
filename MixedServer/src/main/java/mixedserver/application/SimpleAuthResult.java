@@ -2,7 +2,6 @@ package mixedserver.application;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 认证结果实现
@@ -18,7 +17,7 @@ public class SimpleAuthResult {
 
 	private String longtimeToken;
 
-	private Map<String, String> map;
+	private Map<String, String> allInfo;
 
 	public String getUsername() {
 		return username;
@@ -45,32 +44,28 @@ public class SimpleAuthResult {
 	}
 
 	public void addInfo(String key, String value) {
-		if (map == null) {
-			map = new HashMap<String, String>();
+		if (allInfo == null) {
+			allInfo = new HashMap<String, String>();
 		}
 
-		map.put(key, value);
+		allInfo.put(key, value);
 	}
 
 	public String getInfo(String key) {
-		if (map == null) {
+		if (allInfo == null) {
 			return null;
 		}
 
-		return map.get(key);
+		return allInfo.get(key);
 
-	}
-
-	public Set<String> getAllInfoKey() {
-		if (map == null) {
-			return null;
-		}
-
-		return map.keySet();
 	}
 
 	public Map<String, String> getAllInfo() {
-		return map;
+		return allInfo;
+	}
+
+	public Map<String, String> setAllInfo() {
+		return allInfo;
 	}
 
 }
