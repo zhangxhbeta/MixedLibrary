@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import mixedserver.application.AuthResult;
 import mixedserver.application.AuthenticationManagement;
 import mixedserver.application.AuthorityService;
+import mixedserver.application.SimpleAuthResult;
 import mixedserver.protocol.RPCException;
 import mixedserver.tools.EncrpytionTool;
 
@@ -442,7 +442,7 @@ public class Client implements InvocationHandler {
 	 * @return
 	 * @throws RPCException
 	 */
-	public AuthResult login2(String logincode, String password,
+	public SimpleAuthResult login2(String logincode, String password,
 			boolean rememberMe) throws RPCException {
 		return login2(null, logincode, password, rememberMe);
 	}
@@ -456,7 +456,7 @@ public class Client implements InvocationHandler {
 	 * @return
 	 * @throws RPCException
 	 */
-	public AuthResult login2(String domainId, String logincode,
+	public SimpleAuthResult login2(String domainId, String logincode,
 			String password, boolean rememberMe) throws RPCException {
 
 		session.removeAllAttribute();
@@ -465,7 +465,7 @@ public class Client implements InvocationHandler {
 				AuthenticationManagement.class);
 
 		try {
-			AuthResult result = null;
+			SimpleAuthResult result = null;
 			if (domainId != null) {
 				result = auth.login(domainId, logincode, password, rememberMe);
 			} else {

@@ -18,7 +18,7 @@ public interface AuthenticationManagement {
 	 * @return 用户姓名
 	 * @throws RPCException
 	 */
-	public AuthResult login(String logincode, String password,
+	public SimpleAuthResult login(String logincode, String password,
 			boolean rememberMe) throws RPCException;
 
 	/**
@@ -30,8 +30,8 @@ public interface AuthenticationManagement {
 	 * @return 用户姓名
 	 * @throws RPCException
 	 */
-	public AuthResult login(String domianid, String logincode, String password,
-			boolean rememberMe) throws RPCException;
+	public SimpleAuthResult login(String domianid, String logincode,
+			String password, boolean rememberMe) throws RPCException;
 
 	/**
 	 * 注销，同时要注销掉token
@@ -46,6 +46,6 @@ public interface AuthenticationManagement {
 	 * @return
 	 * @throws RPCException
 	 */
-	public AuthResult getRememberdUser() throws RPCException;
+	public SimpleAuthResult getRememberdUser() throws RPCException;
 
 }
