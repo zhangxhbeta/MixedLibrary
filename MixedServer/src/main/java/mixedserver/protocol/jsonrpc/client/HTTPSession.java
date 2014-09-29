@@ -401,4 +401,17 @@ public class HTTPSession implements Session {
 			return -1;
 		}
 	}
+
+	@Override
+	public String getCookie(String name) {
+		List<Cookie> cookies = cookieStore.getCookies();
+		for (int i = 0; i < cookies.size(); i++) {
+			Cookie c = cookies.get(i);
+			if (c.getName().equals(name)) {
+				return c.getValue();
+			}
+		}
+
+		return null;
+	}
 }

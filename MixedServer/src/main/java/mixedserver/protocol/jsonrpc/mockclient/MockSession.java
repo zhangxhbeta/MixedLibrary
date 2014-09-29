@@ -9,6 +9,8 @@ public class MockSession implements Session {
 
 	HashMap<String, Object> map = new HashMap<String, Object>();
 
+	HashMap<String, Object> cookies = new HashMap<String, Object>();
+
 	@Override
 	public void close() {
 
@@ -51,6 +53,11 @@ public class MockSession implements Session {
 
 	@Override
 	public void setCookie(String name, String value) {
-		// TODO Auto-generated method stub
+		cookies.put(name, value);
+	}
+
+	@Override
+	public String getCookie(String name) {
+		return (String) cookies.get(name);
 	}
 }

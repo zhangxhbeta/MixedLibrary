@@ -62,6 +62,14 @@ public interface Session {
 	void setCookie(String name, String value);
 
 	/**
+	 * 获取 cookie
+	 * 
+	 * @param name
+	 * @param value
+	 */
+	String getCookie(String name);
+
+	/**
 	 * 设置会话参数
 	 * 
 	 * @param key

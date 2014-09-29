@@ -122,4 +122,10 @@ public class URLConnectionSession implements Session {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public String getCookie(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
