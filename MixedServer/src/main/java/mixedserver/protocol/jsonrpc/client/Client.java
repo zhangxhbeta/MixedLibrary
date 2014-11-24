@@ -15,6 +15,7 @@ import mixedserver.application.SimpleAuthResult;
 import mixedserver.protocol.RPCException;
 import mixedserver.tools.EncrpytionTool;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
 import org.json.JSONArray;
@@ -41,6 +42,13 @@ public class Client implements InvocationHandler {
 	public static final String SESSION_DOMAINCODE = "_SESSION_DOMAINCODE";
 
 	private static ObjectMapper objectmapper = new ObjectMapper();
+
+	static {
+		objectmapper
+				.configure(
+						DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
+						false);
+	}
 
 	private static Hashtable<String, Client> clients = new Hashtable<String, Client>();
 

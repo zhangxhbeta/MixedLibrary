@@ -15,4 +15,11 @@ public interface Echo {
 	 * @return
 	 */
 	public String say(String what);
+
+	/**
+	 * 测试
+	 * 
+	 * @return
+	 */
+	public Person createPerson();
 }

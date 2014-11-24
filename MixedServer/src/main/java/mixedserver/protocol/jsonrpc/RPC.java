@@ -47,6 +47,7 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.lang.WordUtils;
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
@@ -270,6 +271,10 @@ public class RPC extends HttpServlet {
 		logger.info("RPC init!");
 
 		objectmapper = new ObjectMapper();
+		objectmapper
+				.configure(
+						DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
+						false);
 
 		servletconfig = config;
 		servletcontext = getServletContext();
