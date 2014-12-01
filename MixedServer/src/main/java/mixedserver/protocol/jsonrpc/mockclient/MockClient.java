@@ -106,6 +106,20 @@ public class MockClient extends Client {
 		return login2("", logincode, password, rememberMe);
 	}
 
+	@Override
+	public void logout() throws RPCException {
+		AuthenticationManagement auth = (AuthenticationManagement) openProxy(
+				loginRpcName, AuthenticationManagement.class);
+
+		try {
+			auth.logout();
+			session.removeAllAttribute();
+
+		} finally {
+			closeProxy(auth);
+		}
+	}
+
 	/**
 	 * 是否已登录
 	 * 
