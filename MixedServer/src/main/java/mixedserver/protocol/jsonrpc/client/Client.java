@@ -60,7 +60,7 @@ public class Client implements InvocationHandler {
 
 	private boolean longtimeTokenRegisted = false;
 
-	private String loginRpcName = "authority";
+	protected String loginRpcName = "authority";
 
 	/**
 	 * Maintain a unique id for each message

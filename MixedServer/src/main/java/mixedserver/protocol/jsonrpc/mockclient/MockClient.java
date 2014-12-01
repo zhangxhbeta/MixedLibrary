@@ -2,8 +2,12 @@ package mixedserver.protocol.jsonrpc.mockclient;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+import mixedserver.application.AuthenticationManagement;
 import mixedserver.application.AuthorityService;
+import mixedserver.application.SimpleAuthResult;
+import mixedserver.protocol.RPCException;
 import mixedserver.protocol.jsonrpc.client.Client;
 import mixedserver.protocol.jsonrpc.client.Session;
 
@@ -61,6 +65,45 @@ public class MockClient extends Client {
 	@Override
 	public Map<String, String> login(String logincode, String password) {
 		return login(null, logincode, password);
+	}
+
+	@Override
+	public SimpleAuthResult login2(String domainId, String logincode,
+			String password, boolean rememberMe) throws RPCException {
+		session.removeAllAttribute();
+
+		AuthenticationManagement auth = (AuthenticationManagement) openProxy(
+				loginRpcName, AuthenticationManagement.class);
+		try {
+			SimpleAuthResult result = auth.login(logincode, password,
+					rememberMe);
+			if (result.getUsername() != null) {
+				session.setAttribute(SESSION_USERNAME, result.getUsername());
+			}
+
+			if (result.getAllInfo() != null) {
+				Set<String> allInfoKey = result.getAllInfo().keySet();
+				for (String key : allInfoKey) {
+					session.setAttribute(key, result.getInfo(key));
+				}
+			}
+
+			session.setAttribute(SESSION_LOGINCODE, logincode);
+
+			if (domainId != null) {
+				session.setAttribute(SESSION_DOMAINCODE, domainId);
+			}
+
+			return result;
+		} finally {
+			closeProxy(auth);
+		}
+	}
+
+	@Override
+	public SimpleAuthResult login2(String logincode, String password,
+			boolean rememberMe) throws RPCException {
+		return login2("", logincode, password, rememberMe);
 	}
 
 	/**
