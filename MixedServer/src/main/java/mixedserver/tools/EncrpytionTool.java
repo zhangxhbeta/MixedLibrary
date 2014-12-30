@@ -1,5 +1,8 @@
 package mixedserver.tools;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 加密工具
  * 
@@ -12,6 +15,8 @@ public class EncrpytionTool {
 
 	private static final byte[] BYTE_I_V = {};
 
+	private static final Logger logger = LoggerFactory.getLogger(EncrpytionTool.class);
+
 	/**
 	 * 对字符串src进行Base64(3DES(src))加密
 	 * 
@@ -22,8 +27,9 @@ public class EncrpytionTool {
 		String s = "";
 
 		try {
-			s = PSOCryptography.Encrypt(src, KEY, BYTE_I_V);
+			s = EncryptionHelper.encryptText(src, KEY, BYTE_I_V);
 		} catch (Exception e) {
+			logger.error("", e);
 		}
 		return s;
 	}
@@ -38,8 +44,9 @@ public class EncrpytionTool {
 		String s = "";
 
 		try {
-			s = PSOCryptography.Decrypt(dest, KEY, BYTE_I_V);
+			s = EncryptionHelper.dencryptText(dest, KEY, BYTE_I_V);
 		} catch (Exception e) {
+			logger.error("", e);
 		}
 		return s;
 	}
