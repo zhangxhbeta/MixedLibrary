@@ -741,9 +741,22 @@ public class RPC extends HttpServlet {
 
 	@Override
 	protected void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		res.setHeader("Access-Control-Allow-Origin", "*");
+		String origin = req.getHeader("Origin");
+		String requestHeaders = req.getHeader("Access-Control-Request-Headers");
+
+		// 允许来源
+		res.setHeader("Access-Control-Allow-Origin", origin);
+
+		// 允许的http方法
 		res.setHeader("Access-Control-Allow-Methods", "POST");
-		res.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
+
+		// 允许提交 Cookies
+		res.setHeader("Access-Control-Allow-Credentials", "true");
+
+		// 允许的额外请求头
+		if (requestHeaders != null) {
+			res.setHeader("Access-Control-Allow-Headers", "x-requested-with, content-type");
+		}
 	}
 
 	/**
