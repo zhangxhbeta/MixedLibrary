@@ -727,20 +727,7 @@ public class RPC extends HttpServlet {
 		return msg;
 	}
 
-	/**
-	 * Forwards request to doGet method for consistency
-	 * 
-	 * @see doGet
-	 */
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
-		doGet(req, res);
-	}
-
-
-	@Override
-	protected void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	private void setCrossDomainHeaders(HttpServletRequest req, HttpServletResponse res) {
 		String origin = req.getHeader("Origin");
 		String requestHeaders = req.getHeader("Access-Control-Request-Headers");
 
@@ -757,6 +744,25 @@ public class RPC extends HttpServlet {
 		if (requestHeaders != null) {
 			res.setHeader("Access-Control-Allow-Headers", "x-requested-with, content-type");
 		}
+
+		res.setHeader("Access-Control-Max-Age", "1728000");
+	}
+
+	/**
+	 * Forwards request to doGet method for consistency
+	 * 
+	 * @see doPost
+	 */
+	@Override
+	public void doPost(HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		doGet(req, res);
+	}
+
+
+	@Override
+	protected void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		setCrossDomainHeaders(req, res);
 	}
 
 	/**
@@ -767,9 +773,7 @@ public class RPC extends HttpServlet {
 			throws ServletException, IOException {
 		res.setContentType("application/json; charset=UTF-8");
 
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		// res.addHeader("Access-Control-Allow-Methods", "POST");
-		// res.addHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
+		setCrossDomainHeaders(req, res);
 
 		List<Request> rpcRequests = new ArrayList<Request>(1);
 		List<Response> rpcResponses = new ArrayList<Response>();
