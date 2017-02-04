@@ -26,7 +26,7 @@ public class EncryptionHelper {
 	public static String encryptText(String plainText, String strKey, byte[] byteIV)
 			throws Exception {
 
-		byte[] plaintext = plainText.getBytes();// input
+		byte[] plaintext = plainText.getBytes("utf-8");// input
 
 		byte[] tdesKeyData = hexStringToByteArray(strKey);
 		byte[] myIV = byteIV.length == 0 ? defaultIV : byteIV;
@@ -38,7 +38,7 @@ public class EncryptionHelper {
 		c3des.init(Cipher.ENCRYPT_MODE, myKey, ivspec);
 		byte[] cipherText = c3des.doFinal(plaintext);
 
-		String encryptedString = Base64.encodeToString(cipherText, Base64.DEFAULT);
+		String encryptedString = Base64.encodeToString(cipherText, Base64.NO_WRAP);
 		return encryptedString;
 	}
 
@@ -53,7 +53,7 @@ public class EncryptionHelper {
 	 */
 	public static String dencryptText(String plainText, String strKey, byte[] byteIV)
 			throws Exception {
-		byte[] inputData = Base64.decode(plainText, Base64.DEFAULT);
+		byte[] inputData = Base64.decode(plainText, Base64.NO_WRAP);
 
 		byte[] tdesKeyData = hexStringToByteArray(strKey);
 		byte[] myIV = byteIV.length == 0 ? defaultIV : byteIV;

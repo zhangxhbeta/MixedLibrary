@@ -738,6 +738,14 @@ public class RPC extends HttpServlet {
 		doGet(req, res);
 	}
 
+
+	@Override
+	protected void doOptions(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.setHeader("Access-Control-Allow-Methods", "POST");
+		res.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
+	}
+
 	/**
 	 * Called by servlet container when a request is made.
 	 */
@@ -745,6 +753,10 @@ public class RPC extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 		res.setContentType("application/json; charset=UTF-8");
+
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		// res.addHeader("Access-Control-Allow-Methods", "POST");
+		// res.addHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
 
 		List<Request> rpcRequests = new ArrayList<Request>(1);
 		List<Response> rpcResponses = new ArrayList<Response>();
